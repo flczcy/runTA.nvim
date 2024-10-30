@@ -63,6 +63,22 @@ local function create_floating_term(config)
   col = col or 0
   row = row or 0
 
+  config.output_window_configs.col = col
+  config.output_window_configs.row = row
+
+  -- -- vim.g.foo.bar 似乎不能嵌套赋值, 只能整体替换 vim.g.foo = {}
+  -- vim.g.runTA_config.output_window_configs.col = col
+  -- vim.g.runTA_config.output_window_configs.row = row
+
+  -- https://neovim.io/doc/user/lua.html#lua-vim-variables
+  -- vim.g.foo = { a = 1 }
+  -- vim.g.foo.a = 2
+  -- vim.print(vim.g.foo.a) -- 1 not 2
+  -- local bar = vim.g.foo
+  -- vim.print(bar == vim.g.goo) -- false
+
+  vim.g.runTA_config = config
+
   local buf = vim.api.nvim_create_buf(false, true)
   local win = vim.api.nvim_open_win(buf, true, {
     relative = "editor",
