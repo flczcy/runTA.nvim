@@ -29,7 +29,7 @@ local function create_floating_term(config)
   local positions = {
     center = function()
       col = math.floor((vim.o.columns - width) / 2)
-      row = math.floor((vim.o.lines - height) / 2)
+      row = math.floor((vim.o.lines - height) / 2 - 3)
     end,
     bottom = function()
       col = math.floor((vim.o.columns - width) / 2)
@@ -80,6 +80,9 @@ local function create_floating_term(config)
   vim.g.runTA_config = config
 
   local buf = vim.api.nvim_create_buf(false, true)
+
+  vim.api.nvim_set_option_value("filetype", "runta-output", { buf = buf })
+
   local win = vim.api.nvim_open_win(buf, true, {
     relative = "editor",
     width = width,
@@ -92,8 +95,17 @@ local function create_floating_term(config)
   })
 
   local transparent = window_configs.transparent or false
-  vim.api.nvim_set_option_value("winblend", (not transparent) and 20 or 0, { scope = "local" })
-  vim.api.nvim_set_option_value("winhighlight", "Normal:Normal,FloatBorder:Normal", { scope = "local" })
+
+  vim.api.nvim_set_option_value("winblend", (not transparent) and 0 or 0, { scope = "local" })
+
+  -- vim.api.nvim_set_option_value("winhighlight", "Normal:Normal,FloatBorder:Normal", { scope = "local" })
+
+  vim.api.nvim_set_option_value("winhighlight", table.concat({
+    'Normal:AdaptiveFloatNormal',
+    'NormalFloat:AdaptiveFloatNormal',
+    'FloatTitle:AdaptiveFloatTitle',
+    'FloatBorder:AdaptiveFloatBorder',
+  }, ','), { scope = "local" })
 
   return buf, win
 end
