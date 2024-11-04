@@ -101,10 +101,10 @@ local function create_floating_term(config)
   -- vim.api.nvim_set_option_value("winhighlight", "Normal:Normal,FloatBorder:Normal", { scope = "local" })
 
   vim.api.nvim_set_option_value("winhighlight", table.concat({
-    'Normal:AdaptiveFloatNormal',
-    'NormalFloat:AdaptiveFloatNormal',
-    'FloatTitle:AdaptiveFloatTitle',
-    'FloatBorder:AdaptiveFloatBorder',
+    'Normal:AdaptiveFloatNormal_',
+    'NormalFloat:AdaptiveFloatNormal_',
+    'FloatTitle:AdaptiveFloatTitle_',
+    'FloatBorder:AdaptiveFloatBorder_',
   }, ','), { scope = "local" })
 
   return buf, win
@@ -214,6 +214,8 @@ local function run_code()
     return
   end
 
+  -- Spawns {cmd} in a new pseudo-terminal session connected
+  -- to the current (unmodified) buffer
   vim.fn.termopen(command, {
     on_exit = function(_, code, _)
       if vim.api.nvim_buf_is_valid(output_buf) then
