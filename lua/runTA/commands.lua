@@ -179,7 +179,8 @@ end
 -- Function to run the code in the output window
 local function run_code()
   local ft = vim.bo.filetype
-  local filename = vim.fn.expand("%:p") -- Get the full path of the current file
+  -- 文件名空格使用 ''
+  local filename = "'" .. vim.fn.expand("%:p") .. "'" -- Get the full path of the current file
 
   local command_map = {
     c = "gcc -o temp " .. filename .. " && ./temp",
